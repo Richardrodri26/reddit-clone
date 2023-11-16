@@ -3,6 +3,8 @@ import { db } from "@/lib/db"
 import { notFound } from "next/navigation";
 import { format } from 'date-fns'
 import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/Button";
 
 const Layout = async ({ children, params: { slug } }: { children: React.ReactNode, params: { slug: string } }) => {
   const session = await getAuthSession()
@@ -75,14 +77,14 @@ const Layout = async ({ children, params: { slug } }: { children: React.ReactNod
                 </dd>
               </div>
 
-              { 
+              {
                 subreddit.creatorId === session?.user.id ? (
                   <div className="flex justify-between gap-x-4 py-3">
                     <p className="text-gray-500">You created this community</p>
                   </div>
                 ) : (
                   null
-                )         
+                )
               }
 
               {
@@ -90,6 +92,8 @@ const Layout = async ({ children, params: { slug } }: { children: React.ReactNod
                   <SubscribeLeaveToggle isSubscribed={isSubscribe} subredditId={subreddit.id} subredditName={subreddit.name} />
                 ) : null
               }
+
+              <Link href={`/r/${slug}/submit`} className={buttonVariants({ variant: "outline", className: "w-full mb-6" })}>Create Post</Link>
             </dl>
           </div>
         </div>
