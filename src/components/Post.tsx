@@ -4,6 +4,9 @@ import { useRef } from "react"
 import EditorOutput from "./EditorOutput"
 import Link from "next/link"
 import { MessageSquare } from "lucide-react"
+import PostVoteClient from "./post-vote/PostVoteClient"
+
+type PartialVote = Pick<Vote, "type">
 
 interface Props {
   subredditName: string
@@ -12,15 +15,17 @@ interface Props {
     votes: Vote[]
   }
   commentAmt: number
+  votesAmt: number
+  currentVote?: PartialVote
 }
 
-const PostPage = ({ subredditName, post, commentAmt }: Props) => {
+const PostPage = ({ subredditName, post, commentAmt, votesAmt, currentVote }: Props) => {
   const pRef = useRef<HTMLParagraphElement>(null)
 
   return (
     <div className="rounded-md bg-white shadow">
       <div className="px-6 py-4 flex justify-between">
-        {/* TODO: PostVotes */}
+        <PostVoteClient initalVoteAmt={votesAmt} postId={post.id} initialVote={currentVote?.type} />
 
         <div className="w-0 flex-1">
           <div className="max-h-40 mt-1 text-xs text-gray-500">
@@ -56,7 +61,7 @@ const PostPage = ({ subredditName, post, commentAmt }: Props) => {
             ) : null}
           </div>
 
-        </div>
+        PostVoteClient</div>
       </div>
 
       <div className='bg-gray-50 z-20 text-sm px-4 py-4 sm:px-6'>
